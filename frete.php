@@ -37,7 +37,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Consulta para obter registros
+
 $query_pesagem = "SELECT id_frete, placa, estado, cor, peso, oculta FROM frete";
+
+$user = $_SESSION["id_user"];
+$query_pesagem = "SELECT id_frete, placa, estado, cor, peso, oculta FROM frete WHERE user_id = $user";
+
 $result_pesagem = mysqli_query($conn, $query_pesagem);
 
 // Verifica se a consulta foi bem-sucedida

@@ -17,7 +17,11 @@
         $cor = mysqli_real_escape_string($conn, $cor);
         $peso = mysqli_real_escape_string($conn, $peso);
 
+
         $sql = "INSERT INTO `frete`(`user_id`,`placa`, `estado`, `cor`, `peso`) VALUES (?,?, ?, ?, ?)";
+
+        $sql = "INSERT INTO `frete`(`user_id`,`placa`, `estado`, `cor`, `peso`) VALUES (? ,?, ?, ?, ?)";
+
 
         // Usar prepared statement para prevenir SQL injection
         $stmt = mysqli_prepare($conn, $sql);
