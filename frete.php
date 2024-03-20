@@ -38,20 +38,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Consulta para obter registros
 
-$query_pesagem = "SELECT id_frete, placa, estado, cor, peso, oculta FROM frete";
+
 
 $user = $_SESSION["id_user"];
-$query_pesagem = "SELECT id_frete, placa, estado, cor, peso, oculta FROM frete WHERE user_id = $user";
+$query_frete = "SELECT id_frete, placa, estado, cor, peso, oculta FROM frete WHERE user_id = $user";
 
-$result_pesagem = mysqli_query($conn, $query_pesagem);
+$result_frete = mysqli_query($conn, $query_frete);
 
 // Verifica se a consulta foi bem-sucedida
-if (!$result_pesagem) {
+if (!$result_frete) {
     die('Erro ao buscar dados do banco de dados: ' . mysqli_error($conn));
 }
 
-// Obtém os registros de pesagem
-$registros_pesagem = mysqli_fetch_all($result_pesagem, MYSQLI_ASSOC);
+// Obtém os registros de frete
+$registros_frete = mysqli_fetch_all($result_frete, MYSQLI_ASSOC);
 
 // Fecha a conexão com o banco de dados
 mysqli_close($conn);
@@ -159,27 +159,27 @@ mysqli_close($conn);
                             </thead>
                             <tbody>';
 
-                    // Iterar sobre os registros de pesagem
-                    foreach ($registros_pesagem as $registro_pesagem) {
+                    // Iterar sobre os registros de frete
+                    foreach ($registros_frete as $registro_frete) {
                         echo '<tr>
-                                <td>' . $registro_pesagem['id_frete'] . '</td>
-                                <td>' . $registro_pesagem['placa'] . '</td>
-                                <td>' . $registro_pesagem['estado'] . '</td>
-                                <td>' . $registro_pesagem['cor'] . '</td>
-                                <td>' . $registro_pesagem['peso'] . '</td>
-                                <td>' . $registro_pesagem['oculta'] . '</td>
+                                <td>' . $registro_frete['id_frete'] . '</td>
+                                <td>' . $registro_frete['placa'] . '</td>
+                                <td>' . $registro_frete['estado'] . '</td>
+                                <td>' . $registro_frete['cor'] . '</td>
+                                <td>' . $registro_frete['peso'] . '</td>
+                                <td>' . $registro_frete['oculta'] . '</td>
                                 <td>';
 
-                        if ($registro_pesagem['oculta'] == 'S') {
+                        if ($registro_frete['oculta'] == 'S') {
                             // Se estiver oculta, mostrar o botão "Mostrar"
                             echo '<form action="frete.php" method="post">
-                                    <input type="hidden" name="id_mostrar" value="' . $registro_pesagem['id_frete'] . '">
+                                    <input type="hidden" name="id_mostrar" value="' . $registro_frete['id_frete'] . '">
                                     <button type="submit" class="btn btn-success" name="mostrar">Mostrar</button>
                                 </form>';
                         } else {
                             // Se não estiver oculta, mostrar o botão "Ocultar"
                             echo '<form action="frete.php" method="post">
-                                    <input type="hidden" name="id_ocultar" value="' . $registro_pesagem['id_frete'] . '">
+                                    <input type="hidden" name="id_ocultar" value="' . $registro_frete['id_frete'] . '">
                                     <button type="submit" class="btn btn-danger" name="ocultar">Ocultar</button>
                                 </form>';
                         }

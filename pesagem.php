@@ -3,7 +3,14 @@
 	if(empty($_SESSION) ){
 		print "<script>location.href='index.php';</script>";
 	}
+
+    include("config.php");
     
+    $user = $_SESSION["id_user"];
+    $query_pesagem = "SELECT id_pesagem, talhao_id, frete_id, ano, produto, peso_bruto, hora FROM pesagem WHERE user_id = $user";
+
+    $result_pesagem = mysqli_query($conn, $query_pesagem);
+    mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -124,12 +131,7 @@
                             <option selected>Soja</option>
                             <option>Milho</option>
                         </select>
-                    </div>
-                    
-
-                   
-                    
-                    
+                    </div>           
                     <div class="col-12" style="margin-top: 2%;">
                         <button type="submit" class="btn btn-primary">Registrar</button>
                     </div>
@@ -146,6 +148,45 @@
                     ?>
                 </form>
             </div>
+            <div class="col-md-6">
+                <div class="col-form">
+                    <!-- Tabela -->
+                    <?php
+                        // Supondo que você já tenha uma conexão com o banco de dados e tenha armazenado os resultados da consulta em $result_pesagem
+                        
+                        // Exibir a tabela de registros
+                        echo '<table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>ID Pesagem</th>
+                                        <th>Talhão ID</th>
+                                        <th>Frete ID</th>
+                                        <th>Ano</th>
+                                        <th>Produto</th>
+                                        <th>Peso Bruto</th>
+                                        <th>Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
+
+                        // Iterar sobre os resultados da consulta
+                        while ($registro_pesagem = mysqli_fetch_assoc($result_pesagem)) {
+                            echo '<tr>
+                                    <td>' . $registro_pesagem['id_pesagem'] . '</td>
+                                    <td>' . $registro_pesagem['talhao_id'] . '</td>
+                                    <td>' . $registro_pesagem['frete_id'] . '</td>
+                                    <td>' . $registro_pesagem['ano'] . '</td>
+                                    <td>' . $registro_pesagem['produto'] . '</td>
+                                    <td>' . $registro_pesagem['peso_bruto'] . '</td>
+                                    <td>' . $registro_pesagem['hora'] . '</td>
+                                </tr>';
+                        }
+
+                        echo '</tbody></table>';
+                    ?>
+                </div>
+            </div>
+            
         
     </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
