@@ -169,63 +169,8 @@
                 </form>
             </div>
             <div class="col-md-6">
-                <div class="col-form">
-                    <!-- Tabela -->
-                    <?php
-                        // Supondo que você já tenha uma conexão com o banco de dados e tenha armazenado os resultados da consulta em $result_pesagem
-                        
-                        // Exibir a tabela de registros
-                        echo '<table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>ID Pesagem</th>
-                                        <th>Talhão</th>
-                                        <th>Placa</th>
-                                        <th>Ano</th>
-                                        <th>Produto</th>
-                                        <th>Peso Bruto</th>
-                                        <th>Hora</th>
-                                    </tr>
-                                </thead>
-                                <tbody>';
-                        
-                        // Iterar sobre os resultados da consulta
-                        while ($registro_pesagem = mysqli_fetch_assoc($result_pesagem)) {
-                            // Consulta para obter a placa correspondente ao frete
-                            $frete_id = $registro_pesagem['frete_id'];
-                            $query_placa = "SELECT placa FROM frete WHERE id_frete = $frete_id";
-                            $result_placa = mysqli_query($conn, $query_placa);
-                        
-                            // Verifica se a consulta foi bem-sucedida
-                            if ($result_placa && mysqli_num_rows($result_placa) > 0) {
-                                $row_placa = mysqli_fetch_assoc($result_placa);
-                                $placa = $row_placa['placa'];
-                            } else {
-                                // Tratar o caso onde não foi possível obter a placa correspondente
-                                $placa = 'Placa não encontrada';
-                            }
-                        
-                            // Exibe os dados na tabela
-                            echo '<tr>
-                                    <td>' . $registro_pesagem['id_pesagem'] . '</td>
-                                    <td>' . $registro_pesagem['talhao_id'] . '</td>
-                                    <td>' . $placa . '</td>
-                                    <td>' . $registro_pesagem['ano'] . '</td>
-                                    <td>' . $registro_pesagem['produto'] . '</td>
-                                    <td>' . $registro_pesagem['peso_bruto'] . '</td>
-                                    <td>' . $registro_pesagem['hora'] . '</td>
-                                  </tr>';
-                        
-                            // Liberar o resultado da consulta da placa
-                            mysqli_free_result($result_placa);
-                        }
 
-                        echo '</tbody></table>';
-                    ?>
-                </div>
-            </div>
-            
-        
+            </div>   
     </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
