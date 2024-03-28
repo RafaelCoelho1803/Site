@@ -16,11 +16,15 @@
         die("Erro na consulta: " . mysqli_error($conn));
     }
 
-    // Verificar se a consulta retornou algum resultado
-    if (mysqli_num_rows($result_pesagem) == 0) {
-        echo "Nenhum registro encontrado.";
-    }
+    
 
+    $user = $_SESSION["id_user"];
+    $query_pesagem = "SELECT p.id_pesagem, p.talhao_id, f.placa AS placa_frete, p.ano, p.produto, p.peso_bruto, p.hora 
+                  FROM pesagem p
+                  INNER JOIN frete f ON p.frete_id = f.id_frete
+                  WHERE p.user_id = $user";
+
+    $result_pesagem = mysqli_query($conn, $query_pesagem);
     mysqli_close($conn);
 ?>
 
@@ -146,7 +150,7 @@
                     
                     <div class="col-md-4" style="margin-top: 5%;">
                     <label for="inputState" class="form-label">Produto:</label>
-                        <select id="inputState" class="form-select" name="produto">
+                        <select id="produto" class="form-select" name="produto">
                             <option selected>Soja</option>
                             <option>Milho</option>
                         </select>
@@ -169,9 +173,45 @@
                 </form>
             </div>
             <div class="col-md-6">
-
-            </div>   
-    </div>
+                <h1 class="text-center">REGISTRO DE PESAGEM</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Talhão</th>
+                                <th>Placa do Frete</th>
+                                <th>Ano</th>
+                                <th>Produto</th>
+                                <th>Peso Bruto</th>
+                                <th>Excluir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php                               
+                            // Loop through the results and display each row in the table
+                            while ($row = mysqli_fetch_assoc($result_pesagem)) {
+                                echo "<tr>";
+                                echo "<td>" . $row['id_pesagem'] . "</td>";
+                                echo "<td>" . $row['talhao_id'] . "</td>";
+                                echo "<td>" . $row['placa_frete'];
+                                echo "<td>" . $row['ano'] . "</td>";
+                                echo "<td>" . $row['produto'] . "</td>";
+                                echo "<td>" . $row['peso_bruto'] . "</td>";
+                                echo "<td><button class='btn btn-danger' onclick='excluirRegistro(" . $row['id_pesagem'] . ")'>Excluir</button></td>";
+                                echo "</tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                             
+            </div>
+            <script>
+                function excluirRegistro(id_pesagem) {
+                    if (confirm("Tem certeza que deseja excluir este registro?")) {
+                        window.location.href = "excluir_registro.php?id=" + id_pesagem;
+                    }
+                }
+            </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>  
