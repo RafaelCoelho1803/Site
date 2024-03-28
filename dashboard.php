@@ -68,22 +68,19 @@
                             <span class="material-symbols-outlined">psychiatry</span>
                             <div class="Palavra">PESAGEM</div>
                         </button>
-                        <button type="button" onclick="redirectToDesconto()" class="btn btn-outline-success">
-                        <span class="material-symbols-outlined">trending_down</span>
-                            <div class="Palavra">DESCONTOS</div>
-                        </button>
                         <button onclick="redirectToFrete()" type="button" class="btn btn-outline-success">
                             <span class="material-symbols-outlined">local_shipping</span>
                             <div class="Palavra">FRETE</div>
+                        </button>
+                        <button onclick="redirectToResultado()" type="button" class="btn btn-outline-success">
+                            <span class="material-symbols-outlined">bar_chart_4_bars</span>
+                            <div class="Palavra">Resultados</div>
                         </button>
                     </div>
                 </div>
                 <div class="col-md ">
                     <div class="Button-column">
-                        <button onclick="redirectToResultado()" type="button" class="btn btn-outline-success">
-                            <span class="material-symbols-outlined">bar_chart_4_bars</span>
-                            <div class="Palavra">Resultados</div>
-                        </button>
+                        
                     </div>
                 </div>
             </div>

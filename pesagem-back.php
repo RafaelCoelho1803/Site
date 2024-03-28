@@ -27,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cor_frete = $frete_data[1];
 
     // Preparar e executar a consulta de inserção
-    $query_insert = "INSERT INTO pesagem (talhao_id, frete_id, ano,  peso_bruto, desconto,  user_id , produto) 
-                    VALUES ('$talhao', (SELECT id_frete FROM frete WHERE placa = '$placa_frete' AND cor = '$cor_frete'), '$ano', '$peso_bruto', '$desconto',  '$user_id' , '$produto' )";
+    $query_insert = "INSERT INTO pesagem (talhao_id, frete_id, ano,  peso_bruto, desconto,  user_id , produto , hora) 
+                    VALUES ('$talhao', (SELECT id_frete FROM frete WHERE placa = '$placa_frete' AND cor = '$cor_frete'), '$ano', '$peso_bruto', '$desconto',  '$user_id' , '$produto',NOW() )";
 
     if (mysqli_query($conn, $query_insert)) {
         $_SESSION['mensagem'] = "Dados inseridos com sucesso.";
