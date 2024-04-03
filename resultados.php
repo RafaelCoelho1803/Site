@@ -25,6 +25,7 @@ $query_talhao = "SELECT t.id_talhao, t.Area, SUM(p.peso_bruto - f.peso) AS peso_
                  AND p.ano = $ano
                  AND p.produto = '$produto'
                  GROUP BY t.id_talhao";
+                 
 $result_talhao = mysqli_query($conn, $query_talhao);
 
 // Verifica se houve erro na consulta SQL
@@ -88,18 +89,6 @@ mysqli_close($conn);
                 <option value="S" <?php if ($produto == 'S') echo 'selected' ?>>Soja</option>
                 <option value="M" <?php if ($produto == 'M') echo 'selected' ?>>Milho</option>
                 </select>
-            </div>
-            <div class="form-check mr-3">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Grafico
-                </label>
-                </div>
-                <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Extenso
-                </label>
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary">Filtrar</button>
