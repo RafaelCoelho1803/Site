@@ -7,7 +7,7 @@
     include("config.php");
 
     $user = $_SESSION["id_user"];
-    $query_pesagem = "SELECT id_pesagem, talhao_id, frete_id, ano, produto, peso_bruto, hora FROM pesagem WHERE user_id = $user";
+    $query_pesagem = "SELECT id_pesagem, talhao_id, frete_id, ano, produto, peso_bruto, hora, desconto FROM pesagem WHERE user_id = $user";
 
     $result_pesagem = mysqli_query($conn, $query_pesagem);
 
@@ -19,7 +19,7 @@
     
 
     $user = $_SESSION["id_user"];
-    $query_pesagem = "SELECT p.id_pesagem, p.talhao_id, f.placa AS placa_frete, p.ano, p.produto, p.peso_bruto, p.hora 
+    $query_pesagem = "SELECT p.id_pesagem, p.talhao_id, f.placa AS placa_frete, p.ano, p.produto, p.peso_bruto, p.hora, p.desconto
                   FROM pesagem p
                   INNER JOIN frete f ON p.frete_id = f.id_frete
                   WHERE p.user_id = $user";
@@ -182,6 +182,7 @@
                                 <th>Ano</th>
                                 <th>Produto</th>
                                 <th>Peso Bruto</th>
+                                <th>Desconto</th>
                                 <th>Excluir</th>
                             </tr>
                         </thead>
@@ -196,6 +197,7 @@
                                 echo "<td>" . $row['ano'] . "</td>";
                                 echo "<td>" . $row['produto'] . "</td>";
                                 echo "<td>" . $row['peso_bruto'] . "</td>";
+                                echo "<td>" . $row['desconto'] . "</td>";
                                 echo "<td><button class='btn btn-danger' onclick='excluirRegistro(" . $row['id_pesagem'] . ")'>Excluir</button></td>";
                                 echo "</tr>";
                             }
