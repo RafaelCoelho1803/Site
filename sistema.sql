@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 20/03/2024 às 18:28
+-- Tempo de geração: 03/04/2024 às 23:38
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.0.30
 
@@ -61,8 +61,17 @@ CREATE TABLE `pesagem` (
   `ano` int(11) NOT NULL,
   `produto` char(1) NOT NULL,
   `peso_bruto` int(11) NOT NULL,
-  `data` int(11) NOT NULL DEFAULT current_timestamp()
+  `hora` timestamp NULL DEFAULT NULL,
+  `desconto` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `pesagem`
+--
+
+INSERT INTO `pesagem` (`id_pesagem`, `user_id`, `talhao_id`, `frete_id`, `ano`, `produto`, `peso_bruto`, `hora`, `desconto`) VALUES
+(24, 1, 1, 3, 24, 'S', 123, '2024-03-28 18:08:23', 3),
+(25, 1, 1, 3, 24, 'S', 1000, '2024-04-03 21:09:22', 2);
 
 -- --------------------------------------------------------
 
@@ -72,29 +81,30 @@ CREATE TABLE `pesagem` (
 
 CREATE TABLE `talhoes` (
   `id_talhao` int(11) NOT NULL,
-  `area` int(11) NOT NULL
+  `area` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `talhoes`
 --
 
-INSERT INTO `talhoes` (`id_talhao`, `area`) VALUES
-(1, 150),
-(2, 175),
-(3, 138),
-(4, 65),
-(5, 135),
-(6, 116),
-(7, 175),
-(8, 215),
-(9, 70),
-(10, 100),
-(11, 123),
-(12, 84),
-(13, 35),
-(14, 147),
-(15, 80);
+INSERT INTO `talhoes` (`id_talhao`, `area`, `user_id`) VALUES
+(1, 150, 1),
+(2, 175, 1),
+(3, 138, 1),
+(4, 65, 1),
+(5, 135, 1),
+(6, 116, 1),
+(7, 175, 1),
+(8, 215, 1),
+(9, 70, 1),
+(10, 100, 1),
+(11, 123, 1),
+(12, 84, 1),
+(13, 35, 1),
+(14, 147, 1),
+(15, 80, 1);
 
 -- --------------------------------------------------------
 
@@ -162,7 +172,7 @@ ALTER TABLE `frete`
 -- AUTO_INCREMENT de tabela `pesagem`
 --
 ALTER TABLE `pesagem`
-  MODIFY `id_pesagem` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pesagem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de tabela `talhoes`
