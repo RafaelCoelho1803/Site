@@ -7,7 +7,7 @@
     include("config.php");
 
     $user = $_SESSION["id_user"];
-    $query_pesagem = "SELECT id_pesagem, talhao_id, frete_id, ano, produto, peso_bruto, hora, desconto FROM pesagem WHERE user_id = $user";
+    $query_pesagem = "SELECT id_pesagem, talhao_id, frete_id, ano, produto, peso_bruto, peso_liquido, hora, desconto FROM pesagem WHERE user_id = $user";
 
     $result_pesagem = mysqli_query($conn, $query_pesagem);
 
@@ -19,7 +19,7 @@
     
 
     $user = $_SESSION["id_user"];
-    $query_pesagem = "SELECT p.id_pesagem, p.talhao_id, f.placa AS placa_frete, p.ano, p.produto, p.peso_bruto, p.hora, p.desconto
+    $query_pesagem = "SELECT p.id_pesagem, p.talhao_id, f.placa AS placa_frete, p.ano, p.produto, p.peso_bruto, p.hora, p.desconto , p.peso_liquido
                   FROM pesagem p
                   INNER JOIN frete f ON p.frete_id = f.id_frete
                   WHERE p.user_id = $user";
@@ -31,6 +31,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+    function onlyNumbers(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            // Exibir uma mensagem de erro ou tomar alguma outra ação aqui
+            return false;
+        }
+        return true;
+    }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pesagem</title>
@@ -71,7 +82,7 @@
                 <form class="row g-3" action="pesagem-back.php" method="POST">
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Peso Bruto</label>
-                        <input type="text" class="form-control" name="peso_bruto" id="peso_bruto">
+                        <input type="text" class="form-control" name="peso_bruto" id="peso_bruto" onkeypress="return onlyNumbers(event)">
                     </div>
                     <div class="col-md-4" style="margin-top: 5%;">
                         <label for="inputState" class="form-label">Placa:</label>
@@ -106,11 +117,11 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Desconto %</label>
-                        <input type="text" class="form-control" name="desconto" id="desconto">
+                        <input type="text" class="form-control" name="desconto" id="desconto" onkeypress="return onlyNumbers(event)">
                     </div>
                     <div class="col-md-4" style="margin-top: 5%;">
                         <label for="inputState" class="form-label">Talhao:</label>
-                        <select id="inputState" class="form-select" name="talhao">
+                        <select id="inputState" class="form-select" name="talhao" >
                             <?php
                                 // Conectar ao banco de dados
                                 include("config.php");
@@ -182,6 +193,7 @@
                                 <th>Ano</th>
                                 <th>Produto</th>
                                 <th>Peso Bruto</th>
+                                <th>Peso Liqudo</th>
                                 <th>Desconto</th>
                                 <th>Excluir</th>
                             </tr>
@@ -197,6 +209,7 @@
                                 echo "<td>" . $row['ano'] . "</td>";
                                 echo "<td>" . $row['produto'] . "</td>";
                                 echo "<td>" . $row['peso_bruto'] . "</td>";
+                                echo "<td>" . $row['peso_liquido'] . "</td>";
                                 echo "<td>" . $row['desconto'] . "</td>";
                                 echo "<td><button class='btn btn-danger' onclick='excluirRegistro(" . $row['id_pesagem'] . ")'>Excluir</button></td>";
                                 echo "</tr>";

@@ -61,6 +61,18 @@ mysqli_close($conn);
 <html lang="en">
 
 <head>
+<script>
+    function onlyNumbers(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            // Exibir uma mensagem de erro ou tomar alguma outra ação aqui
+            return false;
+        }
+        return true;
+    }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caminhoes</title>
@@ -110,7 +122,7 @@ mysqli_close($conn);
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Peso</label>
-                        <input type="text" class="form-control" name="peso" id="cor">
+                        <input type="text" class="form-control" name="peso" id="cor" onkeypress="return onlyNumbers(event)">
                     </div>
                     <div class="col-md-4" style="margin-top: 5%;">
                         <label for="inputState" class="form-label">Estado</label>

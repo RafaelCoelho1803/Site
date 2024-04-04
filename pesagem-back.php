@@ -25,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $consulta_peso_caminhao = "SELECT peso FROM frete WHERE placa = '$placa_frete' AND cor = '$cor_frete'";
     $resultado_peso_caminhao = mysqli_query($conn, $consulta_peso_caminhao);
     $peso_caminhao = mysqli_fetch_assoc($resultado_peso_caminhao)['peso'];
-    $peso_liquido = ($peso_bruto - $peso_caminhao)  ;
+    $desconto_porcentagem = 1 - ($desconto / 100);
+    $peso_liquido = ($peso_bruto - $peso_caminhao) * $desconto_porcentagem  ;
 
 
     // Preparar e executar a consulta de inserção
