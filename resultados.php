@@ -16,7 +16,7 @@ $produto = isset($_GET['produto']) ? $_GET['produto'] : 'S'; // Valor padrão: S
 
 // Construção da consulta SQL com base nos filtros
 $query_talhao = "SELECT t.id_talhao, t.Area, SUM(p.peso_bruto - f.peso) AS peso_liquido, 
-                 ROUND(SUM((p.peso_bruto - f.peso) / 60)) AS sacos_soja,
+                 ROUND(SUM((p.peso_bruto - f.peso) / 60)) AS sacos,
                  ROUND(SUM((p.peso_bruto - f.peso) / (60 * t.Area))) AS media_sacos_por_area
                  FROM talhoes t 
                  LEFT JOIN pesagem p ON t.id_talhao = p.talhao_id 
@@ -27,6 +27,7 @@ $query_talhao = "SELECT t.id_talhao, t.Area, SUM(p.peso_bruto - f.peso) AS peso_
                  GROUP BY t.id_talhao";
                  
 $result_talhao = mysqli_query($conn, $query_talhao);
+
 
 // Verifica se houve erro na consulta SQL
 if (!$result_talhao) {
@@ -116,7 +117,7 @@ mysqli_close($conn);
                                     echo "<td>" . $row['id_talhao'] . "</td>";
                                     echo "<td>" . $row['Area'] . "</td>";
                                     echo "<td>" . $row['peso_liquido'] . "</td>";
-                                    echo "<td>" . $row['sacos_soja'] . "</td>";
+                                    echo "<td>" . $row['sacos'] . "</td>";
                                     echo "<td>" . $row['media_sacos_por_area'] . "</td>";
                                     echo "</tr>";
                                 }

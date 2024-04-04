@@ -21,14 +21,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cor_frete = $frete_data[1];
     $produto = $_POST["produto"];
 
-    // Extrair a placa da entrada
-    $placa_info = explode(',', $frete); // Aqui deve ser $frete, não $placa_cor
-    $placa_frete = $frete_data[0];
-    $cor_frete = $frete_data[1];
+    // Calcular o peso líquido
+    $consulta_peso_caminhao = "SELECT peso FROM frete WHERE placa = '$placa_frete' AND cor = '$cor_frete'";
+    $resultado_peso_caminhao = mysqli_query($conn, $consulta_peso_caminhao);
+    $peso_caminhao = mysqli_fetch_assoc($resultado_peso_caminhao)['peso'];
+    $peso_liquido = ($peso_bruto - $peso_caminhao)  ;
+
 
     // Preparar e executar a consulta de inserção
-    $query_insert = "INSERT INTO pesagem (talhao_id, frete_id, ano,  peso_bruto, desconto,  user_id , produto , hora) 
-                    VALUES ('$talhao', (SELECT id_frete FROM frete WHERE placa = '$placa_frete' AND cor = '$cor_frete'), '$ano', '$peso_bruto', '$desconto',  '$user_id' , '$produto',NOW() )";
+    $query_insert = "INSERT INTO pesagem (talhao_id, frete_id, ano, peso_bruto, peso_liquido, desconto, user_id, produto, hora) 
+                SELECT '$talhao', id_frete, '$ano', '$peso_bruto','$peso_liquido', '$desconto', '$user_id', '$produto', NOW() 
+                FROM frete 
+                WHERE placa = '$placa_frete' AND cor = '$cor_frete' 
+                LIMIT 1";
+
 
     if (mysqli_query($conn, $query_insert)) {
         $_SESSION['mensagem'] = "Dados inseridos com sucesso.";
