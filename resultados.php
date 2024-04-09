@@ -13,26 +13,40 @@ $user = $_SESSION["id_user"];
 // Inicialização dos filtros
 $ano = isset($_GET['ano']) ? $_GET['ano'] : '22'; // Valor padrão: 22
 $produto = isset($_GET['produto']) ? $_GET['produto'] : 'S'; // Valor padrão: Soja
+$resultados = isset($_GET['resultados']) ? $_GET['resultados'] : 'T'; // Valor padrão: Talhão
 
 // Construção da consulta SQL com base nos filtros
-$query_talhao = "SELECT t.id_talhao, t.Area, 
-                SUM(p.peso_liquido) AS peso_liquido, 
-                ROUND(SUM((peso_liquido) / 60)) AS sacos,
-                ROUND(SUM((peso_liquido) / (60 * t.Area))) AS media_sacos_por_area,
-                SUM(p.desconto) AS total_desconto,
-                COUNT(p.id_pesagem) AS total_pesagens
-                FROM talhoes t 
-                LEFT JOIN pesagem p ON t.id_talhao = p.talhao_id 
-                LEFT JOIN frete f ON p.frete_id = f.id_frete 
-                WHERE t.user_id = $user 
-                AND p.ano = $ano
-                AND p.produto = '$produto'
-                GROUP BY t.id_talhao";
-                 
-$result_talhao = mysqli_query($conn, $query_talhao);
+if ($resultados === 'T') {
+    $query = "SELECT t.id_talhao, t.Area, 
+              SUM(p.peso_liquido) AS peso_liquido, 
+              ROUND(SUM((peso_liquido) / 60)) AS sacos,
+              ROUND(SUM((peso_liquido) / (60 * t.Area))) AS media_sacos_por_area,
+              SUM(p.desconto) AS total_desconto,
+              COUNT(p.id_pesagem) AS total_pesagens
+              FROM talhoes t 
+              LEFT JOIN pesagem p ON t.id_talhao = p.talhao_id 
+              LEFT JOIN frete f ON p.frete_id = f.id_frete 
+              WHERE t.user_id = $user 
+              AND p.ano = $ano
+              AND p.produto = '$produto'
+              GROUP BY t.id_talhao";
+} else {
+    $query = "SELECT 
+              SUM(p.peso_liquido) AS peso_liquido, 
+              ROUND(SUM((peso_liquido) / 60)) AS sacos,
+              SUM(p.desconto) AS total_desconto,
+              COUNT(p.id_pesagem) AS total_pesagens
+              FROM pesagem p 
+              LEFT JOIN frete f ON p.frete_id = f.id_frete 
+              WHERE p.user_id = $user 
+              AND p.ano = $ano
+              AND p.produto = '$produto'";
+}
+
+$result = mysqli_query($conn, $query);
 
 // Verifica se houve erro na consulta SQL
-if (!$result_talhao) {
+if (!$result) {
     die("Erro na consulta SQL: " . mysqli_error($conn));
 }
 
@@ -101,9 +115,9 @@ mysqli_close($conn);
             </div>    
             <div class="col-sm">    
                 <label class="visually-hidden" for="specificSizeSelect">Resultados</label>
-                <select class="form-select" id="specificSizeSelect" name="produto">
-                    <option value="T">Talhao</option>
-                    <option value="G">Gerais</option>
+                <select class="form-select" id="specificSizeSelect" name="resultados">
+                    <option value="T" <?php if ($resultados == 'T') echo 'selected' ?>>Talhão</option>
+                    <option value="G" <?php if ($resultados == 'G') echo 'selected' ?>>Gerais</option>
                 </select>
             </div>
             <div class="col-auto">
@@ -111,38 +125,46 @@ mysqli_close($conn);
             </div>
         </form>
         <div class="Resultados m-4">
-            <div class="row">
-                <div class="col">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Talhao</th>
-                                <th scope="col">Áreas(He)</th>
-                                <th scope="col">Peso Líquido(Kg)</th>
-                                <th scope="col">Sacos</th>
-                                <th scope="col">Média de Sacos</th>
-                                <th scope="col">Desconto da Área</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php                               
-                            // Loop through the results and display each row in the table
-                            while ($row = mysqli_fetch_assoc($result_talhao)) {
-                                echo "<tr>";
-                                echo "<td>" . $row['id_talhao'] . "</td>";
-                                echo "<td>" . $row['Area'] . "</td>";
-                                echo "<td>" . $row['peso_liquido'] . "</td>";
-                                echo "<td>" . $row['sacos'] . "</td>";
-                                echo "<td>" . $row['media_sacos_por_area'] . "</td>";
-                                $media_desconto = $row['total_desconto'] / $row['total_pesagens'];
-                                echo "<td>" . $media_desconto . "</td>";
-                                echo "</tr>";
-                            }
-                            ?>                               
-                        </tbody>
-                    </table>
+            <?php if ($resultados === 'T') { ?>
+                <div class="row">
+                    <div class="col">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Talhao</th>
+                                    <th scope="col">Áreas(He)</th>
+                                    <th scope="col">Peso Líquido(Kg)</th>
+                                    <th scope="col">Sacos</th>
+                                    <th scope="col">Média de Sacos</th>
+                                    <th scope="col">Desconto da Área</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php                               
+                                // Loop through the results and display each row in the table
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo "<tr>";
+                                    echo "<td>" . $row['id_talhao'] . "</td>";
+                                    echo "<td>" . $row['Area'] . "</td>";
+                                    echo "<td>" . $row['peso_liquido'] . "</td>";
+                                    echo "<td>" . $row['sacos'] . "</td>";
+                                    echo "<td>" . $row['media_sacos_por_area'] . "</td>";
+                                    $media_desconto = $row['total_desconto'] / $row['total_pesagens'];
+                                    echo "<td>" . $media_desconto . "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>                               
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            <?php } else { ?>
+                <div class="row">
+                    <div class="col">
+                        
+                    </div>
+                </div>
+            <?php } ?>
         </div>
     </div>
     
