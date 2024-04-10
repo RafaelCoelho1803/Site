@@ -11,7 +11,7 @@ include("config.php");
 $user = $_SESSION["id_user"];
 
 // Inicialização dos filtros
-$ano = isset($_GET['ano']) ? $_GET['ano'] : '22'; // Valor padrão: 22
+$ano = isset($_GET['ano']) ? $_GET['ano'] : '24'; // Valor padrão: 24
 $produto = isset($_GET['produto']) ? $_GET['produto'] : 'S'; // Valor padrão: Soja
 $resultados = isset($_GET['resultados']) ? $_GET['resultados'] : 'T'; // Valor padrão: Talhão
 
@@ -40,8 +40,13 @@ if ($resultados === 'T') {
               LEFT JOIN frete f ON p.frete_id = f.id_frete 
               WHERE p.user_id = $user 
               AND p.ano = $ano
-              AND p.produto = '$produto'";
+              AND p.produto = '$produto'";                
 }
+
+$query_total = "SELECT COUNT(*) as total FROM pesagem WHERE user_id = $user and produto = '$produto' and ano = '$ano'";
+$result_total = mysqli_query($conn, $query_total);
+$row_total = mysqli_fetch_assoc($result_total);
+$total_pesagens = $row_total['total'];
 
 $result = mysqli_query($conn, $query);
 
@@ -58,7 +63,7 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caminhoes</title>
+    <title>Resultados</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
@@ -159,9 +164,17 @@ mysqli_close($conn);
                     </div>
                 </div>
             <?php } else { ?>
-                <div class="row">
-                    <div class="col">
-                        
+                <div class="container-fluid border">
+                    <div class="container px-0 ">
+                        <div class="row gx-0">
+                            <div class="col">
+                                <div class="p-0"><?php 
+                                    echo "Total de registros em pesagens: " . $total_pesagens;
+                                ?></div>
+                            </div>
+                            <div class="col">
+                                <div class="p-0">Custom column padding</div>
+                            </div>
                     </div>
                 </div>
             <?php } ?>
