@@ -26,7 +26,7 @@ if ($resultados === 'T') {
               FROM talhoes t 
               LEFT JOIN pesagem p ON t.id_talhao = p.talhao_id 
               LEFT JOIN frete f ON p.frete_id = f.id_frete 
-              WHERE t.user_id = $user 
+              WHERE p.user_id = $user 
               AND p.ano = $ano
               AND p.produto = '$produto'
               GROUP BY t.id_talhao";
@@ -145,8 +145,7 @@ mysqli_close($conn);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php                               
-                                // Loop through the results and display each row in the table
+                                <?php                                                              
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     echo "<tr>";
                                     echo "<td>" . $row['id_talhao'] . "</td>";
@@ -164,19 +163,9 @@ mysqli_close($conn);
                     </div>
                 </div>
             <?php } else { ?>
-                <div class="container-fluid border">
-                    <div class="container px-0 ">
-                        <div class="row gx-0">
-                            <div class="col">
-                                <div class="p-0"><?php 
-                                    echo "Total de registros em pesagens: " . $total_pesagens;
-                                ?></div>
-                            </div>
-                            <div class="col">
-                                <div class="p-0">Custom column padding</div>
-                            </div>
+                    <div class="container-fluid">
+
                     </div>
-                </div>
             <?php } ?>
         </div>
     </div>
