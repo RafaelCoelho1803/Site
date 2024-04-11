@@ -163,7 +163,7 @@ mysqli_close($conn);
                     </div>
                 </div>
             <?php } else { ?>
-                    <div class="container-fluid">
+                    <div class="container">
 
                     </div>
             <?php } ?>
