@@ -68,18 +68,35 @@
                             <span class="material-symbols-outlined">psychiatry</span>
                             <div class="Palavra">PESAGEM</div>
                         </button>
-                        <button type="button" onclick="redirectToDesconto()" class="btn btn-outline-success">
-                        <span class="material-symbols-outlined">trending_down</span>
-                            <div class="Palavra">DESCONTOS</div>
-                        </button>
                         <button onclick="redirectToFrete()" type="button" class="btn btn-outline-success">
                             <span class="material-symbols-outlined">local_shipping</span>
                             <div class="Palavra">FRETE</div>
+                        </button>
+                        <button type="button" onclick="redirectToResultado()" class="btn btn-outline-success">
+                        <span class="material-symbols-outlined">warehouse</span>
+                            <div class="Palavra">RESULTADOS</div>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-auto">
+                    <div class="Button-column">
+                        <button onclick="redirectToCadastro()" type="button" class="btn btn-outline-success">
+                        <span class="material-symbols-outlined">app_registration</span>
+                            <div class="Palavra">CADASTROS</div>
+                        </button>
+                        <button onclick="redirectToMovimento()" type="button" class="btn btn-outline-success">
+                            <span class="material-symbols-outlined">trending_flat</span>
+                            <div class="Palavra">MOVIMENTO</div>
+                        </button>
+                        <button type="button" onclick="redirectToEstoque()" class="btn btn-outline-success">
+                        <span class="material-symbols-outlined">inventory_2</span>
+                            <div class="Palavra">ESTOQUE</div>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
 
 
@@ -90,13 +107,7 @@
             window.location.href = 'pesagem.php';
             }
         </script>
-
-        <script>
-            function redirectToDesconto() {
-            window.location.href = 'desconto.php';
-            }
-        </script>
-    
+ 
         <script>
             function redirectToFrete() {
             window.location.href = 'frete.php';
@@ -106,6 +117,24 @@
         <script>
             function redirectToResultado() {
             window.location.href = 'resultados.php';
+            }
+        </script> 
+
+        <script>
+            function redirectToCadastro() {
+            window.location.href = 'cadastro.php';
+            }
+        </script>
+ 
+        <script>
+            function redirectToMovimento() {
+            window.location.href = 'movimento.php';
+            }
+        </script> 
+
+        <script>
+            function redirectToEstoque() {
+            window.location.href = 'estoque.php';
             }
         </script> 
 
